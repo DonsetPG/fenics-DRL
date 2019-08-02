@@ -145,10 +145,10 @@ class Problem:
         And in **kwargs :
 
         :reynolds:                  (float)     Reynolds parameter
-        :v_in: --
-        :mu: --
-        :rho: --
-        :sol_file:                  (String)    Name of the file you wanna save the .pvd in
+        :v_in:                        --
+        :mu:                          --
+        :rho:                         --
+        :sol_file:                  (String)    Name of the file you wanna save the .pvd file in
         :mesh and img _path:        (String)    Folder you want to use to save the mesh and the imgs
         :render and render_mesh:    (Bool)      If you want to save the mesh and the imgs
         :param:                     (Dict)      Allow to add more parameters if you want to
@@ -200,12 +200,13 @@ class Problem:
 
         self.domain = self._build_domain()
 
-        self.mesh = generate_mesh(self.domain,size_mesh)
-        self.h = self.mesh.hmin()
-
         if import_mesh_path is not None:
             os.system("sed -i 's/dim=\"3\"/dim=\"2\"/g' "+import_mesh_path)
             self.mesh = Mesh(import_mesh_path)
+        else:
+            self.mesh = generate_mesh(self.domain, size_mesh)
+
+        self.h = self.mesh.hmin()
 
         self.V = VectorFunctionSpace(self.mesh, 'CG', 2)
         self.Q = FunctionSpace(self.mesh, 'CG', 1)
@@ -217,8 +218,6 @@ class Problem:
         """
 
         self.xmax,self.xmin,self.ymax,self.ymin = self._build_bounds()
-        print('x_min & y_min & x_max & y_max := ',self.xmin,' & ',self.ymin,' & ',self.xmax,' & ',self.ymax)
-        self.xmax_shape,self.xmin_shape,self.ymax_shape,self.ymin_shape = 2,-2,2,-2
 
         self.bcu = []
         self.bcp = []
@@ -236,8 +235,7 @@ class Problem:
             for pos in positions:
                 self.jets.append(JetBCValue(radius, width, pos, Q=3., degree=1))
 
-            #shape = 'on_boundary && x[0]>(' + str(self.xmin) + ') && x[0]<' + str(self.xmax) + ' && x[1]>(' + str(self.ymin) + ') && x[1]<(' + str(self.ymax) + ')'
-            shape = 'near(x[0], ' + str(0) + ')'
+            shape = 'on_boundary && x[0]>(' + str(self.xmin) + ') && x[0]<' + str(self.xmax) + ' && x[1]>(' + str(self.ymin) + ') && x[1]<(' + str(self.ymax) + ')'
             for jet in self.jets:
 
                 bc = DirichletBC(self.V, jet,shape)
@@ -263,17 +261,7 @@ class Problem:
     def _build_bounds(self):
         return self.channel.x_max,self.channel.x_min,self.channel.y_max,self.channel.y_min
 
-    def _build_shape_bounds(self,coords_obstacle,coords_forms):
 
-
-        """
-        Seems outdated :
-        The idea here is to find the smallest square containing every shape we used,
-        and the return the 4 corners
-
-        """
-
-        return self.channel.x_max,self.channel.x_min,self.channel.y_max,self.channel.y_min
 
         """
 
@@ -369,8 +357,8 @@ class Problem:
         if update:
             for Q, jet in zip([val_jet,-val_jet], self.jets):
                 jet.Q = jet.Q + 0.1*(Q - jet.Q)
-            #shape = 'on_boundary && x[0]>(' + str(self.xmin) + ') && x[0]<' + str(self.xmax) + ' && x[1]>(' + str(self.ymin) + ') && x[1]<(' + str(self.ymax) + ')'
-            shape = 'near(x[0], ' + str(0) + ')'
+            shape = 'on_boundary && x[0]>(' + str(self.xmin) + ') && x[0]<' + str(self.xmax) + ' && x[1]>(' + str(self.ymin) + ') && x[1]<(' + str(self.ymax) + ')'
+
             for i in range(len(self.jets)):
                 jet = self.jets[i]
                 self.bcu[i] = DirichletBC(self.V,jet,shape)
@@ -411,7 +399,7 @@ class Problem:
         """
 
 
-        x_lim_max,x_lim_min,y_lim_max,y_lim_min = self.xmax_shape,self.xmin_shape,self.ymax_shape,self.ymin_shape
+        x_lim_max,x_lim_min,y_lim_max,y_lim_min = self.xmax,self.xmin,self.ymax,self.ymin
         shape   = 'on_boundary && x[0]>('+str(x_lim_min)+') && x[0]<'+str(x_lim_max)+' && x[1]>('+str(y_lim_min)+') && x[1]<('+str(y_lim_max)+')'
         bcu_aile    = DirichletBC(self.V,Constant((0.0, 0.0)),  shape)
         self.bcu.append(bcu_aile)
@@ -426,7 +414,7 @@ class Problem:
         h    = self.mesh.hmin()
 
         # Compute timestep and max nb of steps
-        dt        = self.dt
+        dt             = self.dt
         self.timestep  = dt
         self.T         = self.final_time
 

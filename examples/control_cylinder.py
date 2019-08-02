@@ -53,7 +53,6 @@ class FluidMechanicsEnv_(gym.Env):
 
         **Input**:
 
-        nb_episode: the number of episode we wanna train on
         T:          the horizon during an episode
         mesh_path:  folder we will create to save meshs during the training
         render_path:folder we will create to save imgs during training (if in render mode)
@@ -67,14 +66,13 @@ class FluidMechanicsEnv_(gym.Env):
 
         super(FluidMechanicsEnv, self).__init__()
 
-        self.nb_episode  =  kwargs.get('nb_episode',10)
         self.T =            kwargs.get('T',1)
         self.mesh_path =    kwargs.get('mesh_path','mesh')
         self.render_path =  kwargs.get('render_path','img')
 
         # Where our actions will take place :
-        self.X_LIM = [-1.7,-0.7]
-        self.Y_LIM = [-1.5,1.5]
+        self.X_LIM = [-3,-0.7]
+        self.Y_LIM = [-3,3]
         self.current_step = 0
         self.episode = 1
 
@@ -83,7 +81,7 @@ class FluidMechanicsEnv_(gym.Env):
 
 
         self.action_space = spaces.Box(
-            low=np.array([-1.7,-1.5]), high=np.array([-0.7,1.5]), dtype=np.float16)
+            low=np.array([-3,-3]), high=np.array([-0.7,3]), dtype=np.float16)
 
         #self.problem,self.main_drag = self._build_problem(main_drag=True)
         self.problem = self._build_problem(main_drag=False)
@@ -149,8 +147,8 @@ class FluidMechanicsEnv_(gym.Env):
 
         problem = Problem(render=self.render,
                     filename =filename,
-                    min_bounds=(-3,-2),
-                    max_bounds=(3,2),
+                    min_bounds=(-5,-5),
+                    max_bounds=(20,5),
                     types='Rectangle',
                     size_obstacles=nb_obstacles,
                     coords_obstacle = obstacles,
@@ -201,8 +199,7 @@ class FluidMechanicsEnv_(gym.Env):
 
         center_X = action[0]
         center_Y = action[1]
-        print('Cylindre en x := ',center_X)
-        print('Cylindre en y := ',center_Y)
+
         forms = [
             ('Square',(0,0),0.5)
                 ]
@@ -215,8 +212,8 @@ class FluidMechanicsEnv_(gym.Env):
 
         problem = Problem(render=self.render,
                     filename = filename,
-                    min_bounds=(-3,-2),
-                    max_bounds=(3,2),
+                    min_bounds=(-5,-5),
+                    max_bounds=(20,5),
                     types='Rectangle',
                     size_obstacles=1,
                     coords_obstacle = obstacles,
@@ -248,8 +245,6 @@ class FluidMechanicsEnv_(gym.Env):
         reward = (drag) + 3.54 + 0.7
         if reward > 0:
             reward = reward*10
-
-        print('Reward := ',reward)
 
         done = (self.current_step == self.T)
 

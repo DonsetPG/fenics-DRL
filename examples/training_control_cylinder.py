@@ -74,7 +74,7 @@ def callback(_locals, _globals):
 logger = logging.getLogger(__name__)
 
 # Create log dir
-log_dir = "log_experiment1/"
+log_dir = "log/"
 # this enables multiple experiments to be run in parallel --> there is one monitor file for each experiment
 console_log_dir = log_dir + "console/" + 'obstacles_simple_1' + "/"
 models_log_dir = log_dir + "models/"
@@ -96,8 +96,10 @@ def launch_training(nb_cpu,name_agent,name_env,total_timesteps,text):
     n_cpu = nb_cpu
 
     policy_kwargs = dict(act_fun=tf.nn.tanh, net_arch=[32,32])
-
     print('TB available at := ',tensorboard_log_dir, file=sys.stderr)
+
+
+
     if name_agent =='A2C':
         env_ = FluidMechanicsEnv_()
         env_ = Monitor(env_, console_log_dir,allow_early_resets=True)
@@ -154,21 +156,3 @@ def launch_training(nb_cpu,name_agent,name_env,total_timesteps,text):
 # ---------------------------------------
 
 
-"""
-
-Experiments One :
-
-- Simple reward
-- Simple states
-
-"""
-nb_cpu = 16
-agents = ['PPO2']
-name_env = 'FM_obstacles-v0'
-total_timesteps = 10000
-text = '1_step_1_episode_smallCPU'
-
-for name_agent in agents:
-
-    best_mean_reward, n_steps = -np.inf, 0
-    launch_training(nb_cpu,name_agent,name_env,total_timesteps,text)
