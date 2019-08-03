@@ -555,7 +555,14 @@ class Problem:
 
         return drag, lift, True
 
+    
+    def drag_lift_navierstokes(self,update=False):
 
+        self.drag_lift_navierstokes_init(update=update)
+        num_steps = int(self.T/self.timestep)
+        drag, lift, sucess = self.drag_lift_navierstokes_step(num_steps=num_steps)
+
+        return drag,lift,sucess
 
 
 
