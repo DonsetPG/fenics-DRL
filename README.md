@@ -8,7 +8,7 @@ Repository from the paper [A review on Deep Reinforcement Learning for Fluid Mec
 
 ### CFD : 
 
-We used [Fenics]() for this project. The easiest way to install it is by using 
+We used [Fenics](http://fenicsproject.org) for this project. The easiest way to install it is by using 
 [Docker](https://docs.docker.com/install/). Then : 
 
 ```
@@ -19,7 +19,7 @@ should install Fenics.
 
 ### DRL : 
 
-We are using both [Gym - OpenAI]() and [Stable-Baselines](https://github.com/hill-a/stable-baselines).
+We are using both [Gym - OpenAI](https://gym.openai.com) and [Stable-Baselines](https://github.com/hill-a/stable-baselines).
 They both can installed with :
 
 ```
@@ -35,7 +35,7 @@ pip install --user tensorflow keras gym stable-baselines sklearn
 
 ## Launch an experiment : 
 
-An experiment consists of an Environement (based on [Gym - OpenAI]() & [Fenics]()), and an Algorithm from [Stable-Baselines](https://github.com/hill-a/stable-baselines). 
+An experiment consists of an Environement (based on [Gym - OpenAI](https://gym.openai.com) & [Fenics](http://fenicsproject.org)), and an Algorithm from [Stable-Baselines](https://github.com/hill-a/stable-baselines). 
 They can be launched with [test_main.py](https://github.com/DonsetPG/fenics-DRL/test_main.py). You will only have to precise a few parameters : 
 ```python 
 *nb_cpu*: the amount of CPU you want to use (e.g. 16)
@@ -82,7 +82,7 @@ class FluidMechanicsEnv_(gym.Env):
 ```
 
 Here, most of these functions are DRL related, and more informations can be found at [this paper (for applications of DRL on fluid mechanics)]()
-or [here (for more general informations about DRL)](sutton). The only link with Fenics is made with the 
+or [here (for more general informations about DRL)](http://incompleteideas.net/book/the-book.html). The only link with Fenics is made with the 
 
 ```python
 def _build_problem(self,main_drag):
@@ -123,9 +123,9 @@ This repository will be updated when such library finally comes out. Until then,
 # The Team : 
 
 - [Paul Garnier](https://github.com/DonsetPG) : MINES Paristech - PSL Research University 
-- [Jonathan Viquerat]() : MINES Paristech - PSL Research University - CEMEF
-- [Aurélien Larcher]() : MINES Paristech - PSL Research University - CEMEF
-- [Elie Hachem]() : MINES Paristech - PSL Research University - CEMEF
+- [Jonathan Viquerat](https://github.com/jviquerat) : MINES Paristech - PSL Research University - CEMEF
+- [Aurélien Larcher](https://github.com/alarcher) : MINES Paristech - PSL Research University - CEMEF
+- [Elie Hachem](https://github.com/eliemines) : MINES Paristech - PSL Research University - CEMEF
 
 
 

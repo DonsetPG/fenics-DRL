@@ -555,7 +555,7 @@ class Problem:
 
         return drag, lift, True
 
-    
+
     def drag_lift_navierstokes(self,update=False):
 
         self.drag_lift_navierstokes_init(update=update)
