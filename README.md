@@ -1,6 +1,6 @@
 # fenics-DRL : 
 
-Repository from the paper [A review on Deep Reinforcement Learning for Fluid Mechanics]().
+Repository from the paper [A review on Deep Reinforcement Learning for Fluid Mechanics](https://arxiv.org/abs/1908.04127).
 
 # How to use the code : 
 
@@ -81,7 +81,7 @@ class FluidMechanicsEnv_(gym.Env):
         ...
 ```
 
-Here, most of these functions are DRL related, and more informations can be found at [this paper (for applications of DRL on fluid mechanics)]()
+Here, most of these functions are DRL related, and more informations can be found at [this paper (for applications of DRL on fluid mechanics)](https://arxiv.org/abs/1908.04127)
 or [here (for more general informations about DRL)](http://incompleteideas.net/book/the-book.html). The only link with Fenics is made with the 
 
 ```python
